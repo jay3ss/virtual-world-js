@@ -22,6 +22,10 @@ function average(p1, p2) {
     return new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
 }
 
+function dot(p1, p2) {
+    return p1.x * p2.x + p1.y * p2.y;
+}
+
 
 function add(p1, p2) {
     return new Point(p1.x + p2.x, p1.y + p2.y);
@@ -35,6 +39,16 @@ function subtract(p1, p2) {
 
 function scale(point, scaler) {
     return new Point(point.x * scaler, point.y * scaler);
+}
+
+
+function normalize(point) {
+    return scale(point, 1 / magnitude(point));
+}
+
+
+function magnitude(point) {
+    return Math.hypot(point.x, point.y);
 }
 
 
@@ -56,7 +70,8 @@ function getIntersection(A, B, C, D) {
     const uTop = (C.y - A.y) * (A.x - B.x) - (C.x - A.x) * (A.y - B.y);
     const bottom = (D.y - C.y) * (B.x - A.x) - (D.x - C.x) * (B.y - A.y);
 
-    if (bottom !== 0) {
+    const epsilon = 0.001;
+    if (Math.abs(bottom) > epsilon) {
         const t = tTop / bottom;
         const u = uTop / bottom;
         if (t >= 0 && t <= 1 && u >=0 && u <= 1) {

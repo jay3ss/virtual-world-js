@@ -39,11 +39,16 @@
     const viewport = new Viewport(myCanvas);
     const graphEditor = new GraphEditor(viewport, graph);
 
+    // calculate hash of graph to determine if it needs to be re-generated
+    let oldGrpahHash = graph.hash();
     animate()
 
     function animate() {
         viewport.reset();
-        world.generate();
+        if (graph.hash() !== oldGrpahHash) {
+            world.generate();
+            oldGrpahHash = graph.hash();
+        }
         world.draw(viewport.ctx);
         ctx.globalAlpha = 0.3;
         graphEditor.display();
